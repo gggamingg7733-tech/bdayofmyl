@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<!--
+  ════════════════════════════════════════════════════════════════
+  🎈  A FLIP-BOOK FOR HER  🎈
+  PART 1 ("The Little Kite") — a finished motivational story. Leave as is.
+  PART 2 ("Our story") — the personal bit. Look for  ✏️ EDIT  markers
+  to swap in her NAME and tweak any line to fit you two.
+  Open: double-click.   Share: drag onto app.netlify.com/drop
+  ════════════════════════════════════════════════════════════════
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Little Kite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#37456a; --paper:#fffaf0;
+    --kite:#ef5d60; --kite2:#f7a44b;
+    --rose:#ef9bb0; --rose-deep:#e0738f; --lamp:#f6c177;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:'Nunito',system-ui,sans-serif; color:var(--ink);
+    background:linear-gradient(160deg,#fde9c8,#f7c9d4 55%,#cdb4ec);
+    min-height:100vh; overflow-x:hidden; display:flex; align-items:center; justify-content:center;
+    padding:20px; -webkit-font-smoothing:antialiased;
+  }
+  .reader{width:100%; max-width:560px;}
+
+  .book{position:relative; perspective:2000px; height:min(80vh,660px);}
+  .page{position:absolute; inset:0; transform-origin:left center; backface-visibility:hidden;
+    -webkit-backface-visibility:hidden; border-radius:22px; overflow:hidden;
+    background:var(--paper); box-shadow:0 24px 50px -24px rgba(60,30,80,.5);
+    display:flex; flex-direction:column;
+    transition:transform .85s cubic-bezier(.3,.7,.25,1);}
+  .page.flipped{transform:rotateY(-178deg); pointer-events:none;}
+  .page::after{content:""; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(90deg, rgba(0,0,0,.16), transparent 14%);}
+
+  .pic{position:relative; flex:1 1 auto; min-height:0; background:var(--paper);}
+  .pic svg{position:absolute; inset:0; width:100%; height:100%;}
+  .text{flex:0 0 auto; padding:16px 22px 20px; background:var(--paper);}
+  .chapno{font-family:'Caveat',cursive; font-size:1.3rem; color:var(--kite); margin-bottom:2px;}
+  .text p{font-family:'Baloo 2',cursive; font-weight:600; font-size:clamp(1rem,3.5vw,1.18rem);
+    line-height:1.34; color:var(--ink);}
+  .text p em{color:var(--kite); font-style:normal; font-weight:800;}
+
+  .page.current .pic > svg,.page.current .text{animation:fadein .7s ease both;}
+  .page.current .text{animation-delay:.12s;}
+  @keyframes fadein{from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);}}
+
+  .cover .text{text-align:center; padding:22px 22px 28px;}
+  .cover h1{font-family:'Baloo 2',cursive; font-weight:800; font-size:clamp(2rem,8vw,2.8rem);
+    color:var(--kite); line-height:1; margin-bottom:6px;}
+  .cover .sub{font-family:'Caveat',cursive; font-size:1.4rem; color:var(--ink);}
+  .big p{font-size:clamp(1.08rem,4vw,1.38rem); text-align:center;}
+
+  .rays{transform-origin:center; animation:spin 26s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .cloud{animation:drift 16s ease-in-out infinite alternate;}
+  .cloud.b{animation-duration:22s;}
+  @keyframes drift{from{transform:translateX(-12px);} to{transform:translateX(20px);}}
+  .kite{transform-origin:center; animation:flykite 4s ease-in-out infinite;}
+  @keyframes flykite{0%,100%{transform:rotate(-6deg) translateY(0);}50%{transform:rotate(6deg) translateY(-9px);}}
+  .tail path{animation:wag 1.6s ease-in-out infinite;}
+  @keyframes wag{0%,100%{transform:translateX(0);}50%{transform:translateX(5px);}}
+  .rain{animation:fall .7s linear infinite;}
+  @keyframes fall{from{transform:translateY(-30px);}to{transform:translateY(30px);}}
+  .soar{animation:soar 4s ease-in-out infinite;}
+  @keyframes soar{0%,100%{transform:translateY(0);}50%{transform:translateY(-16px);}}
+  .shake{animation:shake .5s ease-in-out infinite;}
+  @keyframes shake{0%,100%{transform:rotate(-10deg);}50%{transform:rotate(12deg);}}
+  .bob{animation:bob 4s ease-in-out infinite; transform-origin:center bottom;}
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+  .pulse{animation:pulse 2.2s ease-in-out infinite; transform-origin:center;}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.14);}}
+  .twinkle{animation:tw 3s ease-in-out infinite;}
+  @keyframes tw{0%,100%{opacity:.4;}50%{opacity:1;}}
+
+  .bar{display:flex; align-items:center; justify-content:center; gap:18px; margin-top:18px;}
+  .nav{width:54px; height:54px; border-radius:50%; border:none; cursor:pointer;
+    background:#fff; color:var(--kite); font-size:1.5rem; font-weight:800;
+    box-shadow:0 10px 22px -10px rgba(60,30,80,.5); transition:transform .15s ease, opacity .2s;}
+  .nav:hover{transform:translateY(-2px);} .nav:active{transform:translateY(0);}
+  .nav:disabled{opacity:.35; cursor:default; transform:none;}
+  .nav:focus-visible{outline:3px solid var(--kite2); outline-offset:3px;}
+  .count{font-family:'Baloo 2',cursive; font-weight:700; color:var(--ink); min-width:60px; text-align:center;}
+
+  .tapzone{position:absolute; top:0; bottom:0; width:34%; z-index:5; cursor:pointer; background:none; border:none;}
+  .tapzone.left{left:0;} .tapzone.right{right:0;}
+  .tapzone:focus-visible{outline:3px solid rgba(255,255,255,.7); outline-offset:-6px; border-radius:22px;}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none !important;}
+    .page{transition:none; transform:none !important; opacity:0;}
+    .page.current{opacity:1;}
+  }
+</style>
+</head>
+<body>
+<div class="reader">
+  <div class="book" id="book">
+
+    <!-- ════════ PART 1 · THE LITTLE KITE ════════ -->
+
+    <!-- COVER -->
+    <section class="page current cover">
+      <div class="pic">
+        <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A little kite flying in a sunny sky">
+          <rect width="600" height="360" fill="url(#cg)"/>
+          <defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d2ecff"/><stop offset="1" stop-color="#a9d8fb"/></linearGradient></defs>
+          <g transform="translate(120,80)"><g class="rays"><g fill="#ffe39a">
+            <rect x="-3" y="-58" width="6" height="20" rx="3"/><rect x="-3" y="38" width="6" height="20" rx="3"/>
+            <rect x="-58" y="-3" width="20" height="6" rx="3"/><rect x="38" y="-3" width="20" height="6" rx="3"/></g></g>
+            <circle r="34" fill="#ffce4d"/></g>
+          <g class="cloud" fill="#fff" opacity=".95"><ellipse cx="470" cy="78" rx="48" ry="26"/><ellipse cx="430" cy="90" rx="34" ry="20"/><ellipse cx="510" cy="90" rx="34" ry="20"/></g>
+          <path d="M0 300 Q300 250 600 300 V360 H0 Z" fill="#94d178"/>
+          <path d="M0 330 Q300 300 600 330 V360 H0 Z" fill="#79bf5d"/>
+          <g class="kite" transform="translate(300,170)">
+            <path d="M0,-54 L38,0 L0,54 L-38,0 Z" fill="#ef5d60"/>
+            <path d="M0,-54 L0,54 M-38,0 L38,0" stroke="#fff" stroke-width="3.5" opacity=".7"/>
+            <circle cx="-11" cy="-8" r="4" fill="#fff"/><circle cx="11" cy="-8" r="4" fill="#fff"/>
+            <path d="M-12 10 Q0 20 12 10" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <g class="tail"><path d="M0 54 q16 16 0 30 q-16 16 0 30" stroke="#f7a44b" stroke-width="5" fill="none"/>
+              <path d="M-7 74 h14 M-7 96 h14" stroke="#f7a44b" stroke-width="5"/></g>
+          </g>
+        </svg>
+      </div>
+      <div class="text"><h1>The Little Kite</h1><div class="sub">a tiny story about flying ✦</div></div>
+    </section>
+
+    <!-- P1 -->
+    <section class="page">
+      <div class="pic">
+        <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A small hopeful kite on a green hill">
+          <rect width="600" height="360" fill="#cdeafe"/>
+          <g class="cloud b" fill="#fff"><ellipse cx="140" cy="68" rx="44" ry="24"/><ellipse cx="105" cy="80" rx="30" ry="18"/><ellipse cx="175" cy="80" rx="30" ry="18"/></g>
+          <circle cx="500" cy="78" r="30" fill="#ffce4d"/>
+          <path d="M0 290 Q300 235 600 290 V360 H0 Z" fill="#94d178"/>
+          <path d="M0 322 Q300 296 600 322 V360 H0 Z" fill="#79bf5d"/>
+          <g class="bob" transform="translate(300,190)">
+            <path d="M0,-50 L36,0 L0,50 L-36,0 Z" fill="#ef5d60"/>
+            <path d="M0,-50 L0,50 M-36,0 L36,0" stroke="#fff" stroke-width="3.5" opacity=".7"/>
+            <circle cx="-10" cy="-6" r="4" fill="#fff"/><circle cx="10" cy="-6" r="4" fill="#fff"/>
+            <path d="M-11 10 Q0 20 11 10" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <g class="tail"><path d="M0 50 q14 14 0 26 q-14 14 0 26" stroke="#f7a44b" stroke-width="5" fill="none"/></g>
+          </g>
+        </svg>
+      </div>
+      <div class="text"><div class="chapno">one</div><p>This is <em>Pip</em> — a small paper kite with one very big dream: to touch the sky.</p></div>
+    </section>
+
+    <!-- P2 -->
+    <section class="page">
+      <div class="pic">
+        <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="The kite tumbling down again and again">
+          <rect width="600" height="360" fill="#cdeafe"/>
+          <circle cx="110" cy="74" r="28" fill="#ffce4d"/>
+          <path d="M0 300 Q300 250 600 300 V360 H0 Z" fill="#94d178"/>
+          <path d="M0 330 Q300 305 600 330 V360 H0 Z" fill="#79bf5d"/>
+          <path d="M210 110 Q300 50 390 120" stroke="#bcdcf5" stroke-width="3" fill="none" stroke-dasharray="6 8"/>
+          <g class="shake" transform="translate(390,135)" opacity=".5"><path d="M0,-26 L20,0 L0,26 L-20,0 Z" fill="#ef9090"/></g>
+          <g transform="translate(300,235)">
+            <path d="M0,-42 L30,0 L0,42 L-30,0 Z" fill="#ef5d60" transform="rotate(26)"/>
+            <g transform="rotate(26)"><circle cx="-9" cy="-6" r="4" fill="#fff"/><circle cx="9" cy="-6" r="4" fill="#fff"/>
+              <path d="M-9 12 Q0 6 9 12" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round"/></g>
+          </g>
+        </svg>
+      </div>
+      <div class="text"><div class="chapno">two</div><p>But every time Pip leapt for the clouds… it tumbled right back down. Again. And <em>again</em>.</p></div>
+    </section>
+
+    <!-- P3 -->
+    <section class="page">
+      <div class="pic">
+        <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="The kite resting in the grass, discouraged">
+          <rect width="600" height="360" fill="#c4d8ea"/>
+          <circle cx="500" cy="76" r="26" fill="#ffd98a"/>
+          <path d="M0 250 Q300 215 600 250 V360 H0 Z" fill="#8cc56f"/>
+          <path d="M0 290 Q300 262 600 290 V360 H0 Z" fill="#79bf5d"/>
+          <g transform="translate(300,270)">
+            <path d="M0,-30 L52,0 L0,30 L-52,0 Z" fill="#ef5d60"/>
+            <circle cx="-16" cy="-3" r="4" fill="#fff"/><circle cx="-2" cy="-3" r="4" fill="#fff"/>
+            <path d="M-16 9 Q-9 5 -2 9" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <g class="twinkle"><path d="M-44 -18 l3 6 6 1 -4 5 1 6 -6 -3 -6 3 1 -6 -4 -5 6 -1 z" fill="#bcd3ea"/></g>
+          </g>
+        </svg>
+      </div>
+      <div class="text"><div class="chapno">three</div><p>“Maybe I’m just not built for the sky,” Pip sighed, lying flat in the grass.</p></div>
+    </section>
+
+    <!-- P4 -->
+    <section class="page">
+      <div class="pic">
+        <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A huge dark storm rolling in">
+          <rect width="600" height="360" fill="url(#sg)"/>
+          <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5c6575"/><stop offset="1" stop-color="#3f4654"/></linearGradient></defs>
+          <g class="cloud" fill="#414a59"><ellipse cx="200" cy="105" rx="120" ry="46"/><ellipse cx="380" cy="115" rx="140" ry="52"/><ellipse cx="120" cy="125" rx="80" ry="36"/></g>
+          <g class="rain" stroke="#9fb2c9" stroke-width="3" stroke-linecap="round" opacity=".7">
+            <line x1="150" y1="170" x2="142" y2="200"/><line x1="230" y1="180" x2="222" y2="210"/><line x1="300" y1="170" x2="292" y2="200"/>
+            <line x1="380" y1="185" x2="372" y2="215"/><line x1="450" y1="172" x2="442" y2="202"/><line x1="270" y1="200" x2="262" y2="230"/><line x1="340" y1="205" x2="332" y2="235"/></g>
+          <path class="pulse" d="M300 145 l-16 42 18 0 -14 48 46 -62 -20 0 16 -34 z" fill="#ffe066" transform-origin="300 200"/>
+          <path d="M0 320 Q300 295 600 320 V360 H0 Z" fill="#2f3540"/>
+        </svg>
+      </div>
+      <div class="text"><div class="chapno">four</div><p>Then the sky turned <em>dark</em>. Thunder. Wind. The biggest storm anyone had ever seen. Everyone ran and hid.</p></div>
+    </section>
+
+    <!-- P5 -->
+    <section class="page">
+      <div class="pic">
+        <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="The wind throwing the kite upward as it holds on">
+          <rect width="600" height="360" fill="#4f5868"/>
+          <g class="cloud" fill="#3a4250" opacity=".9"><ellipse cx="150" cy="85" rx="100" ry="40"/><ellipse cx="450" cy="105" rx="120" ry="46"/></g>
+          <path d="M150 270 Q260 130 320 190 Q350 215 410 130" stroke="#8b97a8" stroke-width="4" fill="none" stroke-dasharray="4 10" opacity=".7"/>
+          <g class="shake" transform="translate(300,165)">
+            <path d="M0,-48 L34,0 L0,48 L-34,0 Z" fill="#ef5d60"/>
+            <path d="M0,-48 L0,48 M-34,0 L34,0" stroke="#fff" stroke-width="3.5" opacity=".6"/>
+            <circle cx="-10" cy="-7" r="4" fill="#fff"/><circle cx="10" cy="-7" r="4" fill="#fff"/>
+            <path d="M-11 12 Q0 4 11 12" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <g class="tail"><path d="M0 48 q16 14 0 26 q-16 14 0 26" stroke="#f7a44b" stroke-width="5" fill="none"/></g>
+          </g>
+        </svg>
+      </div>
+      <div class="text"><div class="chapno">five</div><p>The wind grabbed Pip and hurled it upward — spinning, shaking, terrifying. But Pip <em>held on tight</em>.</p></div>
+    </section>
+
+    <!-- P6 -->
+    <section class="page">
+      <div class="pic">
+        <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="The kite climbing higher through the clouds">
+          <rect width="600" height="360" fill="url(#bg6)"/>
+          <defs><linearGradient id="bg6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bcd4f5"/><stop offset="1" stop-color="#6b7fb0"/></linearGradient></defs>
+          <g class="cloud" fill="#fff" opacity=".85"><ellipse cx="140" cy="255" rx="90" ry="34"/><ellipse cx="460" cy="285" rx="110" ry="40"/></g>
+          <g class="cloud b" fill="#e8eefc" opacity=".8"><ellipse cx="300" cy="305" rx="130" ry="42"/></g>
+          <g class="soar" transform="translate(300,150)">
+            <path d="M0,-50 L36,0 L0,50 L-36,0 Z" fill="#ef5d60"/>
+            <path d="M0,-50 L0,50 M-36,0 L36,0" stroke="#fff" stroke-width="3.5" opacity=".7"/>
+            <circle cx="-10" cy="-7" r="4" fill="#fff"/><circle cx="10" cy="-7" r="4" fill="#fff"/>
+            <path d="M-11 10 Q0 18 11 10" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <g class="tail"><path d="M0 50 q16 14 0 26 q-16 14 0 26" stroke="#f7a44b" stroke-width="5" fill="none"/></g>
+            <path d="M0 50 L0 210" stroke="#fff" stroke-width="2" opacity=".4" stroke-dasharray="4 6"/>
+          </g>
+        </svg>
+      </div>
+      <div class="text"><div class="chapno">six</div><p>And then something strange happened. The harder the storm pushed… the <em>higher</em> Pip climbed.</p></div>
+    </section>
+
+    <!-- P7 -->
+    <section class="page big">
+      <div class="pic">
+        <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="The kite soaring above the clouds into golden light">
+          <rect width="600" height="360" fill="url(#g7)"/>
+          <defs><radialGradient id="g7" cx="50%" cy="36%" r="72%"><stop offset="0" stop-color="#fff3cf"/><stop offset="1" stop-color="#ffcf6b"/></radialGradient></defs>
+          <g class="rays" transform="translate(300,150)" opacity=".5"><g fill="#fff">
+            <rect x="-4" y="-160" width="8" height="64" rx="4"/><rect x="-4" y="96" width="8" height="64" rx="4"/>
+            <rect x="-160" y="-4" width="64" height="8" rx="4"/><rect x="96" y="-4" width="64" height="8" rx="4"/></g></g>
+          <g class="cloud" fill="#fff"><ellipse cx="110" cy="305" rx="90" ry="28"/><ellipse cx="480" cy="315" rx="100" ry="30"/></g>
+          <g class="soar" transform="translate(300,165)">
+            <path d="M0,-54 L38,0 L0,54 L-38,0 Z" fill="#ef5d60"/>
+            <path d="M0,-54 L0,54 M-38,0 L38,0" stroke="#fff" stroke-width="3.5" opacity=".7"/>
+            <circle cx="-11" cy="-8" r="4.5" fill="#fff"/><circle cx="11" cy="-8" r="4.5" fill="#fff"/>
+            <path d="M-13 9 Q0 20 13 9" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <g class="tail"><path d="M0 54 q16 14 0 26 q-16 14 0 26" stroke="#f7a44b" stroke-width="5.5" fill="none"/></g>
+          </g>
+        </svg>
+      </div>
+      <div class="text"><div class="chapno">seven</div><p>Up, up, past the clouds — into the gold. The very storm that scared everyone had carried Pip <em>higher than any kite before</em>. “The wind was never against me,” Pip whispered. “It was lifting me all along.”</p></div>
+    </section>
+
+    <!-- MORAL -->
+    <section class="page big">
+      <div class="pic">
+        <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="The bright kite high in a wide golden sky">
+          <rect width="600" height="360" fill="url(#gm)"/>
+          <defs><linearGradient id="gm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe7a8"/><stop offset="1" stop-color="#ffb86b"/></linearGradient></defs>
+          <g class="soar" transform="translate(300,160)">
+            <path d="M0,-46 L33,0 L0,46 L-33,0 Z" fill="#ef5d60"/>
+            <path d="M0,-46 L0,46 M-33,0 L33,0" stroke="#fff" stroke-width="3.5" opacity=".7"/>
+            <g class="tail"><path d="M0 46 q16 14 0 26 q-16 14 0 26" stroke="#f7a44b" stroke-width="5" fill="none"/></g>
+          </g>
+        </svg>
+      </div>
+      <div class="text"><p><em>Hard winds don’t break the brave.<br>They raise them.</em></p></div>
+    </section>
+
+    <!-- ════════ PART 2 · OUR STORY ════════ -->
+
+    <!-- BRIDGE -->
+    <section class="page">
+      <div class="pic">
+        <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A soft starry dusk sky with a heart">
+          <rect width="600" height="360" fill="url(#dg)"/>
+          <defs><linearGradient id="dg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a3877"/><stop offset="1" stop-color="#2b2057"/></linearGradient></defs>
+          <g fill="#fff4d6"><circle class="twinkle" cx="120" cy="90" r="2.5"/><circle class="twinkle" cx="260" cy="60" r="2"/><circle class="twinkle" cx="420" cy="100" r="2.5"/><circle class="twinkle" cx="490" cy="64" r="2"/><circle class="twinkle" cx="180" cy="150" r="2"/></g>
+          <path class="pulse" d="M300 150 l8 -10 a7 7 0 0 1 10 8 l-18 18 -18 -18 a7 7 0 0 1 10 -8 z" fill="#e0738f" transform-origin="300 162"/>
+        </svg>
+      </div>
+      <div class="text"><div class="chapno" style="color:var(--rose-deep)">and you know what…</div><p>Stories like that one — they remind me of <em style="color:var(--rose-deep)">ours</em>.</p></div>
+    </section>
+
+    <!-- OUR STORY 1 · first gusts -->
+    <section class="page">
+      <div class="pic">
+        <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Two figures with a small kite catching its first wind">
+          <rect width="600" height="360" fill="#352763"/>
+          <g fill="#fff4d6"><circle class="twinkle" cx="100" cy="70" r="2"/><circle class="twinkle" cx="470" cy="80" r="2"/><circle class="twinkle" cx="300" cy="46" r="2"/></g>
+          <g class="kite" transform="translate(300,120) scale(.7)"><path d="M0,-46 L32,0 L0,46 L-32,0 Z" fill="#ef5d60"/>
+            <g class="tail"><path d="M0 46 q12 12 0 24 q-12 12 0 24" stroke="#f7a44b" stroke-width="5" fill="none"/></g></g>
+          <path d="M300 188 L300 250" stroke="#fff" stroke-width="2" opacity=".4" stroke-dasharray="4 6"/>
+          <path d="M0 300 Q300 262 600 300 V360 H0 Z" fill="#2c2150"/>
+          <g class="bob">
+            <circle cx="258" cy="252" r="22" fill="#f6c177"/><rect x="243" y="270" width="30" height="42" rx="12" fill="#ef9bb0"/>
+            <circle cx="342" cy="254" r="22" fill="#ffd9a0"/><rect x="327" y="272" width="30" height="40" rx="12" fill="#8fd0c4"/>
+          </g>
+        </svg>
+      </div>
+      <!-- ✏️ EDIT: a real detail of how you started if you like -->
+      <div class="text"><div class="chapno" style="color:var(--rose-deep)">our first gusts</div><p>When we started, we didn’t really know how to fly either. We caught a little wind, we dropped, we tried again — figuring each other out <em style="color:var(--rose-deep)">one gust at a time</em>.</p></div>
+    </section>
+
+    <!-- OUR STORY 2 · learning to fly -->
+    <section class="page">
+      <div class="pic">
+        <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Two figures flying their kite higher, happy together">
+          <rect width="600" height="360" fill="#473672"/>
+          <circle cx="480" cy="76" r="28" fill="#ffd9a0"/><circle cx="470" cy="70" r="28" fill="#473672"/>
+          <g fill="#fff4d6"><circle class="twinkle" cx="120" cy="70" r="2"/><circle class="twinkle" cx="250" cy="100" r="2"/></g>
+          <g class="soar" transform="translate(300,100) scale(.8)"><path d="M0,-44 L32,0 L0,44 L-32,0 Z" fill="#ef5d60"/>
+            <g class="tail"><path d="M0 44 q12 12 0 24 q-12 12 0 24" stroke="#f7a44b" stroke-width="5" fill="none"/></g></g>
+          <path d="M300 170 L300 248" stroke="#fff" stroke-width="2" opacity=".4" stroke-dasharray="4 6"/>
+          <path d="M0 300 Q300 264 600 300 V360 H0 Z" fill="#352763"/>
+          <g class="bob">
+            <circle cx="262" cy="250" r="22" fill="#f6c177"/><rect x="247" y="268" width="30" height="42" rx="12" fill="#ef9bb0"/>
+            <circle cx="338" cy="250" r="22" fill="#ffd9a0"/><rect x="323" y="268" width="30" height="42" rx="12" fill="#8fd0c4"/>
+            <path class="pulse" d="M300 210 l4 -5 a4 4 0 0 1 6 5 l-10 10 -10 -10 a4 4 0 0 1 6 -5 z" fill="#e0738f" transform-origin="300 218"/>
+          </g>
+        </svg>
+      </div>
+      <!-- ✏️ EDIT -->
+      <div class="text"><div class="chapno" style="color:var(--rose-deep)">learning to fly</div><p>And slowly we found our rhythm. The easy laughter, the small ordinary magic, the days the wind was kind and we just… <em style="color:var(--rose-deep)">soared together</em>.</p></div>
+    </section>
+
+    <!-- OUR STORY 3 · our storms -->
+    <section class="page">
+      <div class="pic">
+        <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="The two figures holding on through a storm, kite shaking but flying">
+          <rect width="600" height="360" fill="#2e2750"/>
+          <g class="cloud" fill="#3a3460" opacity=".9"><ellipse cx="180" cy="95" rx="110" ry="40"/><ellipse cx="430" cy="105" rx="120" ry="44"/></g>
+          <g class="rain" stroke="#6f7aa0" stroke-width="3" stroke-linecap="round" opacity=".6"><line x1="180" y1="150" x2="174" y2="174"/><line x1="300" y1="160" x2="294" y2="184"/><line x1="420" y1="150" x2="414" y2="174"/></g>
+          <g class="shake" transform="translate(300,140) scale(.72)"><path d="M0,-46 L32,0 L0,46 L-32,0 Z" fill="#ef5d60"/>
+            <g class="tail"><path d="M0 46 q12 12 0 24 q-12 12 0 24" stroke="#f7a44b" stroke-width="5" fill="none"/></g></g>
+          <path d="M300 184 L300 250" stroke="#fff" stroke-width="2" opacity=".45" stroke-dasharray="4 6"/>
+          <path d="M0 300 Q300 266 600 300 V360 H0 Z" fill="#241f44"/>
+          <g class="bob">
+            <circle cx="270" cy="252" r="22" fill="#f6c177"/><rect x="255" y="270" width="30" height="42" rx="12" fill="#ef9bb0"/>
+            <circle cx="330" cy="252" r="22" fill="#ffd9a0"/><rect x="315" y="270" width="30" height="42" rx="12" fill="#8fd0c4"/>
+          </g>
+        </svg>
+      </div>
+      <div class="text"><div class="chapno" style="color:var(--rose-deep)">our storms</div><p>We’ve had our storms too. The arguments, the distance, the days it felt like we were tumbling back toward the ground. But every single time — <em style="color:var(--rose-deep)">we held on. We never let go of the string.</em></p></div>
+    </section>
+
+    <!-- OUR STORY 4 · right now / this gust -->
+    <section class="page">
+      <div class="pic">
+        <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="The kite climbing past one last cloud into clearing light">
+          <rect width="600" height="360" fill="url(#rn)"/>
+          <defs><linearGradient id="rn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a5a9c"/><stop offset="1" stop-color="#3a2b66"/></linearGradient></defs>
+          <g class="cloud" fill="#4a4170" opacity=".85"><ellipse cx="220" cy="230" rx="100" ry="34"/><ellipse cx="430" cy="250" rx="90" ry="30"/></g>
+          <g class="soar" transform="translate(300,120)"><path d="M0,-46 L33,0 L0,46 L-33,0 Z" fill="#ef5d60"/>
+            <path d="M0,-46 L0,46 M-33,0 L33,0" stroke="#fff" stroke-width="3.5" opacity=".7"/>
+            <circle cx="-10" cy="-7" r="4" fill="#fff"/><circle cx="10" cy="-7" r="4" fill="#fff"/>
+            <path d="M-11 9 Q0 18 11 9" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <g class="tail"><path d="M0 46 q14 14 0 26 q-14 14 0 26" stroke="#f7a44b" stroke-width="5" fill="none"/></g>
+            <path d="M0 46 L0 220" stroke="#fff" stroke-width="2" opacity=".4" stroke-dasharray="4 6"/></g>
+          <g fill="#fff4d6"><circle class="twinkle" cx="120" cy="70" r="2"/><circle class="twinkle" cx="480" cy="80" r="2"/></g>
+        </svg>
+      </div>
+      <div class="text"><div class="chapno" style="color:var(--rose-deep)">and right now…</div><p>Right now is just another gust — a heavy one, I know. But look how far we’ve already climbed. We don’t crash the way we used to. <em style="color:var(--rose-deep)">We rise.</em></p></div>
+    </section>
+
+    <!-- FINALE -->
+    <section class="page big">
+      <div class="pic">
+        <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid slice" role="img" aria-label="A figure flying a kite high into a golden rose sky">
+          <rect width="600" height="360" fill="url(#gf)"/>
+          <defs><linearGradient id="gf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe7a8"/><stop offset="1" stop-color="#f5a9c2"/></linearGradient></defs>
+          <g class="rays" transform="translate(300,110)" opacity=".4"><g fill="#fff"><rect x="-4" y="-150" width="8" height="54" rx="4"/><rect x="-150" y="-4" width="54" height="8" rx="4"/><rect x="96" y="-4" width="54" height="8" rx="4"/></g></g>
+          <g class="soar" transform="translate(300,110)">
+            <path d="M0,-36 L26,0 L0,36 L-26,0 Z" fill="#ef5d60"/>
+            <path d="M0,-36 L0,36 M-26,0 L26,0" stroke="#fff" stroke-width="3" opacity=".7"/>
+            <g class="tail"><path d="M0 36 q12 10 0 20 q-12 10 0 20" stroke="#f7a44b" stroke-width="4" fill="none"/></g>
+          </g>
+          <path d="M300 290 L300 146" stroke="#fff" stroke-width="2" opacity=".6" stroke-dasharray="4 6"/>
+          <g class="bob" transform="translate(300,300)">
+            <circle cx="0" cy="-26" r="20" fill="#f6c177"/><rect x="-15" y="-9" width="30" height="44" rx="12" fill="#ef9bb0"/>
+          </g>
+        </svg>
+      </div>
+      <!-- ✏️ EDIT: her NAME -->
+      <div class="text"><p>This story isn’t finished, D . We’re still climbing, you and me. And you are going to reach the <em style="color:var(--rose-deep)">greatest heights</em> — I’ll be right here, cheering for us, the whole way up.<br><span style="font-family:'Caveat',cursive;color:var(--rose-deep);font-size:1.5rem">Happy Birthday Love🎈</span></p></div>
+    </section>
+
+    <button class="tapzone left"  id="tapL" aria-label="Previous page"></button>
+    <button class="tapzone right" id="tapR" aria-label="Next page"></button>
+  </div>
+
+  <div class="bar">
+    <button class="nav" id="prev" aria-label="Previous page">‹</button>
+    <div class="count" id="count">1 / 1</div>
+    <button class="nav" id="next" aria-label="Next page">›</button>
+  </div>
+</div>
+
+<script>
+  const pages=[...document.querySelectorAll('.page')];
+  const N=pages.length; let i=0;
+  pages.forEach((p,idx)=>p.style.zIndex=N-idx);
+  const prevB=document.getElementById('prev'), nextB=document.getElementById('next'), count=document.getElementById('count');
+  function render(){
+    pages.forEach((p,idx)=>{ p.classList.toggle('flipped', idx<i); p.classList.toggle('current', idx===i); });
+    count.textContent=(i+1)+' / '+N;
+    prevB.disabled=(i===0); nextB.disabled=(i===N-1);
+  }
+  function next(){ if(i<N-1){ i++; render(); } }
+  function prev(){ if(i>0){ i--; render(); } }
+  nextB.onclick=next; prevB.onclick=prev;
+  document.getElementById('tapR').onclick=next; document.getElementById('tapL').onclick=prev;
+  document.addEventListener('keydown',e=>{ if(e.key==='ArrowRight')next(); if(e.key==='ArrowLeft')prev(); });
+  let sx=null; const bk=document.getElementById('book');
+  bk.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  bk.addEventListener('touchend',e=>{ if(sx==null)return; const dx=e.changedTouches[0].clientX-sx; if(dx<-40)next(); else if(dx>40)prev(); sx=null; },{passive:true});
+  render();
+</script>
+</body>
+</html>
